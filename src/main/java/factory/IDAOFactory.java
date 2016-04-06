@@ -1,8 +1,6 @@
-package factory;
+package main.java.factory;
 
-import daos.ICommandDAO;
-import daos.IGameDAO;
-import daos.IUserDAO;
+import main.java.daos.*;
 
 /**
  * Created by Kyle 'TMD' Cornelison on 4/2/2016.
