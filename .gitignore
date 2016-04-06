@@ -1,0 +1,10 @@
+.DS_Store
+.idea/
+
+java/dist/
+java/build/
+
+*.zip
+*.jar
+
+*.log
