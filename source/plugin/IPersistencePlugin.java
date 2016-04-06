@@ -1,10 +1,9 @@
-package externalpersistencetemp.redis.plugin;
+package plugin;
 
-import externalpersistencetemp.redis.daos.ICommandDAO;
-import externalpersistencetemp.redis.daos.IGameDAO;
-import externalpersistencetemp.redis.daos.IUserDAO;
-import server.exceptions.EndTransactionException;
-import server.exceptions.StartTransactionException;
+
+import daos.ICommandDAO;
+import daos.IGameDAO;
+import daos.IUserDAO;
 
 /**
  * Created by Kyle 'TMD' Cornelison on 4/2/2016.

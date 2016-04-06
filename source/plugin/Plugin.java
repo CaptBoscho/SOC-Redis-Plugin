@@ -1,10 +1,10 @@
-package externalpersistencetemp.redis.plugin;
+package plugin;
 
-import externalpersistencetemp.redis.daos.ICommandDAO;
-import externalpersistencetemp.redis.daos.IGameDAO;
-import externalpersistencetemp.redis.daos.IUserDAO;
-import externalpersistencetemp.redis.factory.DAOFactory;
-import externalpersistencetemp.redis.factory.IDAOFactory;
+import daos.ICommandDAO;
+import daos.IGameDAO;
+import daos.IUserDAO;
+import factory.DAOFactory;
+import factory.IDAOFactory;
 
 /**
  * Created by Kyle 'TMD' Cornelison on 4/2/2016.
