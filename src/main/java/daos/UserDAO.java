@@ -1,55 +1,27 @@
-package daos;
+package main.java.daos;
 
-import dto.IDTO;
+import main.java.dto.UserDTO;
+
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by Kyle 'TMD' Cornelison on 4/2/2016.
  */
 public class UserDAO implements IUserDAO {
 
-    /**
-     * Handles adding a user,
-     * adding a command
-     * adding a game
-     *
-     * @param dto
-     */
     @Override
-    public void addObject(IDTO dto) {
-
+    public void addUser(UserDTO dto) throws SQLException {
+        
     }
 
-    /**
-     * Handles verifying user which returns userID
-     * Getting the current game model
-     * getting a list of Commands
-     *
-     * @param dto
-     * @return
-     */
     @Override
-    public IDTO readData(IDTO dto) {
+    public List<UserDTO> getUsers() throws SQLException {
         return null;
     }
 
-    /**
-     * mostly be used for updating the game blob state
-     *
-     * @param dto
-     */
     @Override
-    public void updateData(IDTO dto) {
-
-    }
-
-    /**
-     * Mostly be used for deleting commands every n
-     * moves.
-     *
-     * @param dto
-     */
-    @Override
-    public void deleteData(IDTO dto) {
+    public void deleteUsers() throws SQLException {
 
     }
 }
