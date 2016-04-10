@@ -15,10 +15,33 @@ import java.util.Set;
 public class UserDAO implements IUserDAO {
 
     @Override
-    public void addUser(UserDTO dto) {
+    public int addUser(UserDTO dto) {
         Jedis jedis = Database.getConnection();
-        jedis.lpush("user-" + dto.getId(), dto.getPassword());
-        jedis.lpush("user-" + dto.getId(), dto.getUserName());
+        Set<String> keys = jedis.keys("user-*");
+        Iterator<String> iter = keys.iterator();
+        boolean userExists = false;
+        ArrayList<String> ids = new ArrayList<>();
+        while(iter.hasNext()) {
+            String key = iter.next();
+            key = key.substring(5, key.length());
+            ids.add(key);
+            if(Integer.parseInt(key) == dto.getId()) {
+                userExists = true;
+            }
+        }
+        if(!userExists) {
+            jedis.lpush("user-" + dto.getId(), dto.getPassword());
+            jedis.lpush("user-" + dto.getId(), dto.getUserName());
+            return dto.getId();
+        } else {
+            int id = dto.getId();
+            while(ids.contains(id + "")) {
+                id++;
+            }
+            jedis.lpush("user-" + id, dto.getPassword());
+            jedis.lpush("user-" + id, dto.getUserName());
+            return id;
+        }
     }
 
     @Override

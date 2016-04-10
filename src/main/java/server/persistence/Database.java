@@ -52,9 +52,9 @@ public class Database implements IDatabase {
     }
 
     @Override
-    public void addUser(UserDTO dto) {
+    public int addUser(UserDTO dto) {
         IUserDAO dao = DAOFactory.getInstance().createUserDAO();
-        dao.addUser(dto);
+        return dao.addUser(dto);
     }
 
     @Override
@@ -64,9 +64,9 @@ public class Database implements IDatabase {
     }
 
     @Override
-    public void addGame(GameDTO dto) {
+    public int addGame(GameDTO dto) {
         IGameDAO dao = DAOFactory.getInstance().createGameDAO();
-        dao.addGameObject(dto);
+        return dao.addGameObject(dto);
     }
 
     @Override

@@ -15,10 +15,33 @@ import java.util.Set;
 public class GameDAO implements IGameDAO {
 
     @Override
-    public void addGameObject(GameDTO dto) {
+    public int addGameObject(GameDTO dto) {
         Jedis jedis = Database.getConnection();
-        jedis.lpush("game-" + dto.getGameID(), dto.getState());
-        jedis.lpush("game-" + dto.getGameID(), dto.getTitle());
+        Set<String> keys = jedis.keys("game-*");
+        Iterator<String> iter = keys.iterator();
+        boolean gameExists = false;
+        ArrayList<String> ids = new ArrayList<>();
+        while(iter.hasNext()) {
+            String key = iter.next();
+            key = key.substring(5, key.length());
+            ids.add(key);
+            if(Integer.parseInt(key) == dto.getGameID()) {
+                gameExists = true;
+            }
+        }
+        if(!gameExists) {
+            jedis.lpush("game-" + dto.getGameID(), dto.getState());
+            jedis.lpush("game-" + dto.getGameID(), dto.getTitle());
+            return dto.getGameID();
+        } else {
+            int id = dto.getGameID();
+            while(ids.contains(id + "")) {
+                id++;
+            }
+            jedis.lpush("game-" + id, dto.getState());
+            jedis.lpush("game-" + id, dto.getTitle());
+            return id;
+        }
     }
 
     @Override

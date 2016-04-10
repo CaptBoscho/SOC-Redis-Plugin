@@ -11,8 +11,9 @@ public interface IUserDAO {
     /**
      * Handles adding a user
      * @param dto
+     * @return int
      */
-    void addUser(UserDTO dto);
+    int addUser(UserDTO dto);
 
     /**
      * Handles verifying user which returns userID
