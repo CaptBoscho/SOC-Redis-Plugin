@@ -2,7 +2,6 @@ package daos;
 
 import server.persistence.dto.GameDTO;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -25,7 +24,7 @@ public interface IGameDAO {
      */
     GameDTO getGameModel(int gameID);
 
-    List<GameDTO> getAllGames() throws SQLException;
+    List<GameDTO> getAllGames();
 
     /**
      * mostly be used for updating the game blob state
