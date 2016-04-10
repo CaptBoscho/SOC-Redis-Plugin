@@ -1,55 +1,68 @@
 package daos;
 
-import dto.IDTO;
+import database.Database;
+import redis.clients.jedis.Jedis;
+import server.persistence.dto.CommandDTO;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
- * Created by Kyle 'TMD' Cornelison on 4/2/2016.
+ * @author Joel Bradley
  */
 public class CommandDAO implements ICommandDAO {
 
-    /**
-     * Handles adding a user,
-     * adding a command
-     * adding a game
-     *
-     * @param dto
-     */
     @Override
-    public void addObject(IDTO dto) {
-
+    public void addCommand(CommandDTO dto) {
+        Jedis jedis = Database.getConnection();
+        jedis.rpush("comm-" + dto.getGameID(), dto.getCommand());
     }
 
-    /**
-     * Handles verifying user which returns userID
-     * Getting the current game model
-     * getting a list of Commands
-     *
-     * @param dto
-     * @return
-     */
     @Override
-    public IDTO readData(IDTO dto) {
-        return null;
+    public List<CommandDTO> getCommands(int gameID) {
+        Jedis jedis = Database.getConnection();
+        ArrayList<CommandDTO> commands = new ArrayList<>();
+        List<String> result = jedis.lrange("comm-" + gameID, 0, -1);
+        for(String command : result) {
+            CommandDTO dto = new CommandDTO();
+            dto.setGameID(gameID);
+            dto.setCommand(command);
+            commands.add(dto);
+        }
+        return commands;
     }
 
-    /**
-     * mostly be used for updating the game blob state
-     *
-     * @param dto
-     */
     @Override
-    public void updateData(IDTO dto) {
-
+    public List<CommandDTO> getAllCommands() {
+        Jedis jedis = Database.getConnection();
+        ArrayList<CommandDTO> commands = new ArrayList<>();
+        Set<String> keys = jedis.keys("comm-*");
+        Iterator<String> iter = keys.iterator();
+        while(iter.hasNext()) {
+            String key = iter.next();
+            key = key.substring(5, key.length());
+            for(CommandDTO command : getCommands(Integer.parseInt(key))) {
+                commands.add(command);
+            }
+        }
+        return commands;
     }
 
-    /**
-     * Mostly be used for deleting commands every n
-     * moves.
-     *
-     * @param dto
-     */
     @Override
-    public void deleteData(IDTO dto) {
+    public void deleteAllCommands() {
+        Jedis jedis = Database.getConnection();
+        Set<String> keys = jedis.keys("comm-*");
+        Iterator<String> iter = keys.iterator();
+        while(iter.hasNext()) {
+            jedis.del(iter.next());
+        }
+    }
 
+    @Override
+    public void deleteCommandsFromGame(int gameID) {
+        Jedis jedis = Database.getConnection();
+        jedis.del("comm-" + gameID);
     }
 }

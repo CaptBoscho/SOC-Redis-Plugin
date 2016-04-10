@@ -1,38 +1,29 @@
 package daos;
 
-import dto.IDTO;
+import server.persistence.dto.UserDTO;
+
+import java.util.List;
 
 /**
- * Created by Kyle 'TMD' Cornelison on 4/5/2016.
+ * @author Joel Bradley
  */
 public interface IUserDAO {
     /**
-     * Handles adding a user,
-     * adding a command
-     * adding a game
+     * Handles adding a user
      * @param dto
      */
-    void addObject(IDTO dto);
+    void addUser(UserDTO dto);
 
     /**
      * Handles verifying user which returns userID
-     * Getting the current game model
-     * getting a list of Commands
-     * @param dto
+     *
      * @return
      */
-    IDTO readData(IDTO dto);
+    List<UserDTO> getUsers();
+
 
     /**
-     * mostly be used for updating the game blob state
-     * @param dto
+     * delete a user
      */
-    void updateData(IDTO dto);
-
-    /**
-     * Mostly be used for deleting commands every n
-     * moves.
-     * @param dto
-     */
-    void deleteData(IDTO dto);
+    void deleteUsers() ;
 }

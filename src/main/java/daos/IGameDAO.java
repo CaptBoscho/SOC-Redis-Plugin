@@ -1,9 +1,11 @@
 package daos;
 
-import dto.IDTO;
+import server.persistence.dto.GameDTO;
+
+import java.util.List;
 
 /**
- * Created by Kyle 'TMD' Cornelison on 4/5/2016.
+ * @author Joel Bradley
  */
 public interface IGameDAO {
     /**
@@ -12,27 +14,31 @@ public interface IGameDAO {
      * adding a game
      * @param dto
      */
-    void addObject(IDTO dto);
+    void addGameObject(GameDTO dto);
 
     /**
      * Handles verifying user which returns userID
      * Getting the current game model
      * getting a list of Commands
-     * @param dto
      * @return
      */
-    IDTO readData(IDTO dto);
+    GameDTO getGameModel(int gameID);
+
+    List<GameDTO> getAllGames();
 
     /**
      * mostly be used for updating the game blob state
      * @param dto
      */
-    void updateData(IDTO dto);
+    void updateGame(GameDTO dto);
 
     /**
-     * Mostly be used for deleting commands every n
-     * moves.
-     * @param dto
+     * Deletes all games
      */
-    void deleteData(IDTO dto);
+    void deleteAllGames();
+
+    /**
+     * Deletes a game
+     */
+    void deleteGame(int gameID);
 }

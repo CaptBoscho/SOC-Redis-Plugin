@@ -1,54 +1,72 @@
 package daos;
 
-import dto.IDTO;
+import database.Database;
+import redis.clients.jedis.Jedis;
+import server.persistence.dto.GameDTO;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
- * Created by Kyle 'TMD' Cornelison on 4/2/2016.
+ * @author Joel Bradley
  */
 public class GameDAO implements IGameDAO {
-    /**
-     * Handles adding a user,
-     * adding a command
-     * adding a game
-     *
-     * @param dto
-     */
-    @Override
-    public void addObject(IDTO dto) {
 
+    @Override
+    public void addGameObject(GameDTO dto) {
+        Jedis jedis = Database.getConnection();
+        jedis.lpush("game-" + dto.getGameID(), dto.getState());
+        jedis.lpush("game-" + dto.getGameID(), dto.getTitle());
     }
 
-    /**
-     * Handles verifying user which returns userID
-     * Getting the current game model
-     * getting a list of Commands
-     *
-     * @param dto
-     * @return
-     */
     @Override
-    public IDTO readData(IDTO dto) {
-        return null;
+    public GameDTO getGameModel(int gameID) {
+        Jedis jedis = Database.getConnection();
+        List<String> result = jedis.lrange("game-" + gameID, 0, 1);
+        GameDTO dto = new GameDTO();
+        dto.setGameID(gameID);
+        dto.setTitle(result.get(0));
+        dto.setState(result.get(1));
+        return dto;
     }
 
-    /**
-     * mostly be used for updating the game blob state
-     *
-     * @param dto
-     */
     @Override
-    public void updateData(IDTO dto) {
-
+    public List<GameDTO> getAllGames() {
+        Jedis jedis = Database.getConnection();
+        ArrayList<GameDTO> games = new ArrayList<>();
+        Set<String> keys = jedis.keys("game-*");
+        Iterator<String> iter = keys.iterator();
+        while(iter.hasNext()) {
+            String key = iter.next();
+            key = key.substring(5, key.length());
+            games.add(getGameModel(Integer.parseInt(key)));
+        }
+        return games;
     }
 
-    /**
-     * Mostly be used for deleting commands every n
-     * moves.
-     *
-     * @param dto
-     */
     @Override
-    public void deleteData(IDTO dto) {
-
+    public void updateGame(GameDTO dto) {
+        Jedis jedis = Database.getConnection();
+        jedis.rpop("game-" + dto.getGameID());
+        jedis.rpush("game-" + dto.getGameID(), dto.getState());
     }
+
+    @Override
+    public void deleteAllGames() {
+        Jedis jedis = Database.getConnection();
+        Set<String> keys = jedis.keys("game-*");
+        Iterator<String> iter = keys.iterator();
+        while(iter.hasNext()) {
+            jedis.del(iter.next());
+        }
+    }
+
+    @Override
+    public void deleteGame(int gameID) {
+        Jedis jedis = Database.getConnection();
+        jedis.del("game-" + gameID);
+    }
+
 }
