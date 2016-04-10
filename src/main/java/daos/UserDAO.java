@@ -31,10 +31,7 @@ public class UserDAO implements IUserDAO {
             String key = iter.next();
             key = key.substring(5, key.length());
             List<String> result = jedis.lrange("user-" + key, 0, 1);
-            UserDTO dto = new UserDTO();
-            dto.setId(Integer.parseInt(key));
-            dto.setUserName(result.get(0));
-            dto.setPassword(result.get(1));
+            UserDTO dto = new UserDTO(Integer.parseInt(key), result.get(0), result.get(1));
             users.add(dto);
         }
         return users;

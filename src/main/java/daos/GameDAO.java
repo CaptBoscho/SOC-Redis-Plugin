@@ -25,10 +25,7 @@ public class GameDAO implements IGameDAO {
     public GameDTO getGameModel(int gameID) {
         Jedis jedis = Database.getConnection();
         List<String> result = jedis.lrange("game-" + gameID, 0, 1);
-        GameDTO dto = new GameDTO();
-        dto.setGameID(gameID);
-        dto.setTitle(result.get(0));
-        dto.setState(result.get(1));
+        GameDTO dto = new GameDTO(gameID, result.get(0), result.get(1));
         return dto;
     }
 
