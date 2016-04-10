@@ -26,9 +26,7 @@ public class CommandDAO implements ICommandDAO {
         ArrayList<CommandDTO> commands = new ArrayList<>();
         List<String> result = jedis.lrange("comm-" + gameID, 0, -1);
         for(String command : result) {
-            CommandDTO dto = new CommandDTO();
-            dto.setGameID(gameID);
-            dto.setCommand(command);
+            CommandDTO dto = new CommandDTO(gameID, -1, command);
             commands.add(dto);
         }
         return commands;
