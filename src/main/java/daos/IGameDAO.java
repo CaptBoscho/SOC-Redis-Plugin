@@ -14,7 +14,7 @@ public interface IGameDAO {
      * adding a game
      * @param dto
      */
-    void addGameObject(GameDTO dto);
+    int addGameObject(GameDTO dto);
 
     /**
      * Handles verifying user which returns userID
