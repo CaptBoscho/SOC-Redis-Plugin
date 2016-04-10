@@ -1,6 +1,7 @@
-package database;
+package server.persistence;
 
 import redis.clients.jedis.Jedis;
+import server.persistence.dto.GameDTO;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -25,7 +26,7 @@ public class Database implements IDatabase {
         return getInstance().connection;
     }
 
-    private Database() {
+    public Database() {
         connection = new Jedis("45.55.178.18", 6379);
     }
 
@@ -41,5 +42,10 @@ public class Database implements IDatabase {
     @Override
     public void shutdown() {
         connection.close();
+    }
+
+    @Override
+    public void addGame(GameDTO dto) {
+
     }
 }

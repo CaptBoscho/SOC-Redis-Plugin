@@ -1,6 +1,6 @@
 package daos;
 
-import database.Database;
+import server.persistence.Database;
 import redis.clients.jedis.Jedis;
 import server.persistence.dto.UserDTO;
 

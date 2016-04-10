@@ -9,6 +9,18 @@ repositories {
     mavenCentral()
 }
 
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'SOC PostgreSQL Plugin',
+                'Implementation-Version': version,
+                'Main-Class': 'main.CLI'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 dependencies {
     compile 'redis.clients:jedis:2.8.1'
     testCompile 'junit:junit:4.12'
