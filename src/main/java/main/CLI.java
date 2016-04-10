@@ -1,5 +1,7 @@
 package main;
 
+import server.persistence.Database;
+
 /**
  * @author Derek Argueta
  *
@@ -8,6 +10,6 @@ package main;
 public class CLI {
 
     public static void main(String[] args) {
-
+        System.out.println(Database.getConnection().keys("*"));
     }
 }
