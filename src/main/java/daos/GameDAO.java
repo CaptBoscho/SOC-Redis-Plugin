@@ -38,8 +38,8 @@ public class GameDAO implements IGameDAO {
             while(ids.contains(id + "")) {
                 id++;
             }
-            jedis.lpush("game-" + dto.getGameID(), dto.getState());
-            jedis.lpush("game-" + dto.getGameID(), dto.getTitle());
+            jedis.lpush("game-" + id, dto.getState());
+            jedis.lpush("game-" + id, dto.getTitle());
             return id;
         }
     }
