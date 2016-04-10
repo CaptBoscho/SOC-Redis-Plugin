@@ -1,7 +1,10 @@
 package server.persistence;
 
+import daos.IUserDAO;
+import factory.DAOFactory;
 import redis.clients.jedis.Jedis;
 import server.persistence.dto.GameDTO;
+import server.persistence.dto.UserDTO;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -42,6 +45,12 @@ public class Database implements IDatabase {
     @Override
     public void shutdown() {
         connection.close();
+    }
+
+    @Override
+    public void addUser(UserDTO dto) {
+        IUserDAO dao = DAOFactory.getInstance().createUserDAO();
+        dao.addUser(dto);
     }
 
     @Override
