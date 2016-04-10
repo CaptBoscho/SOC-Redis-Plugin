@@ -11,5 +11,5 @@ repositories {
 
 dependencies {
     compile 'redis.clients:jedis:2.8.1'
-    testCompile 'junit', name: 'junit', version: '4.11'
+    testCompile 'junit:junit:4.12'
 }
