@@ -80,4 +80,22 @@ public class Database implements IDatabase {
         ICommandDAO dao = DAOFactory.getInstance().createCommandDAO();
         return dao.getCommands(gameId);
     }
+
+    @Override
+    public void addCommand(CommandDTO dto) {
+        ICommandDAO dao = DAOFactory.getInstance().createCommandDAO();
+        dao.addCommand(dto);
+    }
+
+    @Override
+    public void updateGame(GameDTO dto) {
+        IGameDAO dao = DAOFactory.getInstance().createGameDAO();
+        dao.updateGame(dto);
+    }
+
+    @Override
+    public void deleteCommandsFromGame(int gameID) {
+        ICommandDAO dao = DAOFactory.getInstance().createCommandDAO();
+        dao.deleteCommandsFromGame(gameID);
+    }
 }
