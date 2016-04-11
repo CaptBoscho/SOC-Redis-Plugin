@@ -3,6 +3,7 @@ package main;
 import daos.IGameDAO;
 import factory.DAOFactory;
 import server.persistence.Database;
+import server.persistence.dto.GameDTO;
 
 /**
  * @author Derek Argueta
@@ -13,7 +14,8 @@ public class CLI {
 
     public static void main(String[] args) {
         IGameDAO dao = DAOFactory.getInstance().createGameDAO();
-        dao.deleteGame(2);
-        System.out.println(Database.getConnection().keys("*"));
+        for(GameDTO game : dao.getAllGames()) {
+            System.out.println(game.getGameID() + " --- " + game.getTitle());
+        }
     }
 }

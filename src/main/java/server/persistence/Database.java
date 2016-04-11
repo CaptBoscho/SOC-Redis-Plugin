@@ -37,6 +37,10 @@ public class Database implements IDatabase {
         connection = new Jedis("45.55.178.18", 6379);
     }
 
+    public void setTestDb() {
+        connection.select(10);
+    }
+
     @Override
     public void clear() {
         Set<String> keys = connection.keys("*");

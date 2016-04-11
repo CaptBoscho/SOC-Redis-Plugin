@@ -14,6 +14,8 @@ import java.util.Set;
  */
 public class GameDAO implements IGameDAO {
 
+    private static final String GAME_PREFIX = "game-";
+
     @Override
     public int addGameObject(GameDTO dto) {
         Jedis jedis = Database.getConnection();
@@ -30,16 +32,16 @@ public class GameDAO implements IGameDAO {
             }
         }
         if(!gameExists) {
-            jedis.lpush("game-" + dto.getGameID(), dto.getState());
-            jedis.lpush("game-" + dto.getGameID(), dto.getTitle());
+            jedis.lpush(GAME_PREFIX + dto.getGameID(), dto.getState());
+            jedis.lpush(GAME_PREFIX + dto.getGameID(), dto.getTitle());
             return dto.getGameID();
         } else {
             int id = dto.getGameID();
             while(ids.contains(id + "")) {
                 id++;
             }
-            jedis.lpush("game-" + id, dto.getState());
-            jedis.lpush("game-" + id, dto.getTitle());
+            jedis.lpush(GAME_PREFIX + id, dto.getState());
+            jedis.lpush(GAME_PREFIX + id, dto.getTitle());
             return id;
         }
     }
@@ -47,7 +49,7 @@ public class GameDAO implements IGameDAO {
     @Override
     public GameDTO getGameModel(int gameID) {
         Jedis jedis = Database.getConnection();
-        List<String> result = jedis.lrange("game-" + gameID, 0, 1);
+        List<String> result = jedis.lrange(GAME_PREFIX + gameID, 0, 1);
         GameDTO dto = new GameDTO(gameID, result.get(0), result.get(1));
         return dto;
     }
@@ -69,8 +71,8 @@ public class GameDAO implements IGameDAO {
     @Override
     public void updateGame(GameDTO dto) {
         Jedis jedis = Database.getConnection();
-        jedis.rpop("game-" + dto.getGameID());
-        jedis.rpush("game-" + dto.getGameID(), dto.getState());
+        jedis.rpop(GAME_PREFIX + dto.getGameID());
+        jedis.rpush(GAME_PREFIX + dto.getGameID(), dto.getState());
     }
 
     @Override
@@ -86,7 +88,7 @@ public class GameDAO implements IGameDAO {
     @Override
     public void deleteGame(int gameID) {
         Jedis jedis = Database.getConnection();
-        jedis.del("game-" + gameID);
+        jedis.del(GAME_PREFIX + gameID);
     }
 
 }
