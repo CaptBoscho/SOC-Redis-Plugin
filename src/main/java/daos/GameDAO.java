@@ -57,11 +57,9 @@ public class GameDAO implements IGameDAO {
     @Override
     public List<GameDTO> getAllGames() {
         Jedis jedis = Database.getConnection();
-        ArrayList<GameDTO> games = new ArrayList<>();
+        List<GameDTO> games = new ArrayList<>();
         Set<String> keys = jedis.keys("game-*");
-        Iterator<String> iter = keys.iterator();
-        while(iter.hasNext()) {
-            String key = iter.next();
+        for (String key : keys) {
             key = key.substring(5, key.length());
             games.add(getGameModel(Integer.parseInt(key)));
         }
